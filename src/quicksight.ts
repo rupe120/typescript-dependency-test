@@ -5,27 +5,28 @@ import {
     StartAssetBundleExportJobCommand,
     StartAssetBundleExportJobCommandInput,
 } from '@aws-sdk/client-quicksight';
+import { v4 as uuid } from 'uuid';
 
 const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
 const quicksightClient = new QuickSightClient({ region: process.env.AWS_REGION });
 
-function createRandomId(): string {
-    let outString: string = '';
-    let inOptions: string = 'abcdefghijklmnopqrstuvwxyz0123456789';
+// function createRandomId(): string {
+//     let outString: string = '';
+//     let inOptions: string = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (let i = 0; i < 32; i++) {
-        outString += inOptions.charAt(Math.floor(Math.random() * inOptions.length));
-    }
+//     for (let i = 0; i < 32; i++) {
+//         outString += inOptions.charAt(Math.floor(Math.random() * inOptions.length));
+//     }
 
-    return outString;
-}
+//     return outString;
+// }
 
 export async function quicksightDatasetRefresh(datasetId: string): Promise<void> {
     console.log(`'Creating ingestion for ${datasetId}`);
     const command = new CreateIngestionCommand({
         AwsAccountId: AWS_ACCOUNT_ID,
         DataSetId: datasetId,
-        IngestionId: createRandomId(),
+        IngestionId: uuid(),
         IngestionType: IngestionType.FULL_REFRESH,
     });
 
